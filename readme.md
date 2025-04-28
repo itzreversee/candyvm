@@ -1,6 +1,9 @@
 # CandyVM
 Small project to simulate a vm/emulator device in godot.
 
+Download from "Releases" tab and launch!  
+You can type `help` to see commands.
+
 ### How does it work.
 Scene tree holds serveral objects.
 - / - script emits a signal to the bios device
