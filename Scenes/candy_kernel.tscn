@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://7kakesmt326v"]
+
+[ext_resource type="Script" uid="uid://bt205pbxo6x54" path="res://Scripts/candy_kernel.gd" id="1_b0cuc"]
+
+[node name="CandyKernel" type="Node"]
+script = ExtResource("1_b0cuc")

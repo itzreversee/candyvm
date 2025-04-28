@@ -1,0 +1,70 @@
+[gd_scene load_steps=7 format=3 uid="uid://cejltijbpevk4"]
+
+[ext_resource type="Script" uid="uid://eik7y5nvptr8" path="res://Scripts/vm.gd" id="1_g7tau"]
+[ext_resource type="Script" uid="uid://bno7kttlndoio" path="res://Scripts/devices/input.gd" id="2_1v0dj"]
+[ext_resource type="Script" uid="uid://bimqgb1xxd8lu" path="res://Scripts/devices/gpu.gd" id="2_tsys7"]
+[ext_resource type="Script" uid="uid://dys8eq52xqsr2" path="res://Scripts/devices/keyboard.gd" id="4_7b8h4"]
+[ext_resource type="Script" uid="uid://dvynca1d2yfwg" path="res://Scripts/devices/bios.gd" id="4_lkle0"]
+[ext_resource type="PackedScene" uid="uid://7kakesmt326v" path="res://Scenes/candy_kernel.tscn" id="6_hm0rl"]
+
+[node name="VMScene" type="Node2D"]
+script = ExtResource("1_g7tau")
+
+[node name="VM" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1280.0
+offset_bottom = 720.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="VM"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Display" type="Control" parent="VM"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Input" type="Control" parent="VM"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_1v0dj")
+
+[node name="Devices" type="Node" parent="."]
+
+[node name="gpu" type="Node" parent="Devices"]
+script = ExtResource("2_tsys7")
+
+[node name="bios" type="Node" parent="Devices"]
+script = ExtResource("4_lkle0")
+_devices_path = NodePath("..")
+_vm_path = NodePath("../../VM")
+_candy_kernel_path = NodePath("../../CandyKernel")
+
+[node name="keyboard" type="Node" parent="Devices"]
+script = ExtResource("4_7b8h4")
+
+[node name="CandyKernel" parent="." instance=ExtResource("6_hm0rl")]
+
+[connection signal="vm_run" from="." to="Devices/bios" method="_run"]
+[connection signal="input" from="VM/Input" to="Devices/keyboard" method="_on_input"]
+[connection signal="destroy_output" from="Devices/bios" to="Devices/gpu" method="_destroy_output"]
+[connection signal="setup_output" from="Devices/bios" to="Devices/gpu" method="_setup_output_handler"]
+[connection signal="keyboard_key" from="Devices/keyboard" to="Devices/bios" method="_on_keyboard_key"]
